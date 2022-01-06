@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
+body{
+  background:#f3f3f3;
+  font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size:16px;
+  width: 100%;
+  height: 100%;
+}
+h1, h2, h3, h4{
+  color:#333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App{
+  /* display: flex; */
+  padding:2em;
+  overflow:hidden;
+  /* padding: 16px 64px; */
+  /* flex-wrap: wrap; */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.addContactForm{
   display: flex;
-  flex-direction: column;
+  /* justify-content: stretch; */
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.addContactForm > input{
+  display:block;
+  margin-right:0.5em;
+  padding:10px;
+  border:1px solid #ccc;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.addContactForm > input:last-child{
+  margin-right:0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-bottom: 1.5em;
+  margin-bottom: 2em;
+  border-bottom: 1px solid #ccc;
+}
+
+.header > h1 {
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+
+.phoneBookList{
+  overflow:hidden;
+  /* border-left:1px solid #ccc; */
+  padding-bottom:30px;
+  flex-grow: 1;
+}
+.contact{
+  border-bottom:1px solid #ccc;
+  padding:20px;
+}
+.contact h2{
+  margin:0 0 8px;
+  font-size: 1.2em;
+}
+.contact p{
+  margin:0;
+}
+button{
+  padding:10px 30px;
+  background: #35c2f8;
+  width: 100%;
+  color:#fff;
+  border:none;
 }

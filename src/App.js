@@ -1,23 +1,44 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
+import AddContactForm from './components/AddContactForm';
+import PhoneBookList from './components/PhoneBookList';
+import Notification from './components/Notification';
 import './App.css';
+import phoneService from './Services/phone';
 
 function App() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    const allContacts = phoneService.getContacts();
+    allContacts.sort((a, b) => sortContacts(a, b));
+    setContacts(allContacts);
+  }, [contacts]);
+
+  const sortContacts = (a, b) => {
+    const fa = a.first_name?.toLowerCase();
+    const fb = b.first_name?.toLowerCase();
+
+    if (fa < fb) {
+      return -1;
+    }
+    if (fa > fb) {
+      return 1;
+    }
+    return 0;
+  };
+
+  const onSubmit = item => {
+    phoneService.addContact(item);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="header navbar sticky-top col">
+        <h1>My PhoneBook</h1>
+        <AddContactForm onSubmit={onSubmit} />
+      </div>
+
+      <PhoneBookList contacts={contacts} />
     </div>
   );
 }
