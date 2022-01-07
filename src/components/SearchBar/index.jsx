@@ -31,7 +31,7 @@ function SearchBar() {
 
     performSearch(value);
     // console.log(JSON.stringify(currentParams)); // get new values onchange
-  }, [value]);
+  }, [contacts, searchParams, value]);
 
   const handleKeyUp = e => {
     if (e.key === 'Enter') {

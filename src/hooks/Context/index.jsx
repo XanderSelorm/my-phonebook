@@ -32,6 +32,7 @@ const PhonebookProvider = ({ children }) => {
 
   // TODO: Rewrite this search function
   const performSearch = value => {
+    console.log('Search running');
     const lowerValue = value && value?.toLowerCase();
     if (!contacts && contacts?.length === 0) {
       fetchContacts();
