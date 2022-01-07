@@ -25,8 +25,8 @@ const ContactsList = () => {
                 key={contact.id}
                 contact={contact}
                 onDelete={() => deleteContact(contact.id)}
-                onEdit={item => onEdit(item)}
-                onViewContact={item => onViewContact(item)}
+                onEdit={() => onEdit(contact)}
+                onViewContact={() => onViewContact(contact)}
               />
             );
           })

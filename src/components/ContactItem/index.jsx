@@ -19,7 +19,7 @@ const ContactItem = ({ contact, onDelete, onEdit, onViewContact }) => {
       <Grid item container sm={10} md={10} flexGrow={1} alignItems="center">
         <Grid item sm={6}>
           {/* <Link to={`/contact/${id}`} className={classes.link}> */}
-          <a className={classes.link} onClick={() => onViewContact(contact)}>
+          <a className={classes.link} onClick={() => onViewContact()}>
             <Typography variant="h6">{`${firstname} ${lastname}`}</Typography>
           </a>
           {/* </Link> */}
@@ -39,12 +39,12 @@ const ContactItem = ({ contact, onDelete, onEdit, onViewContact }) => {
         flexWrap="nowrap"
       >
         <Grid item sm={6}>
-          <IconButton onClick={() => onEdit(contact)}>
+          <IconButton onClick={() => onEdit()}>
             <Edit />
           </IconButton>
         </Grid>
         <Grid item sm={6}>
-          <IconButton onClick={onDelete}>
+          <IconButton onClick={() => onDelete()}>
             <Delete />
           </IconButton>
         </Grid>
