@@ -26,14 +26,12 @@ function SearchBar() {
     searchParams.get('q')?.toLowerCase() || '',
   );
 
-  const [results, setResults] = useState([]);
-
   useEffect(() => {
     // const currentParams = Object.fromEntries([...searchParams]);
 
     performSearch(value);
     // console.log(JSON.stringify(currentParams)); // get new values onchange
-  }, [contacts, searchParams, value]);
+  }, [value]);
 
   const handleKeyUp = e => {
     if (e.key === 'Enter') {

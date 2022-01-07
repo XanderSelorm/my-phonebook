@@ -33,6 +33,9 @@ const PhonebookProvider = ({ children }) => {
   // TODO: Rewrite this search function
   const performSearch = value => {
     const lowerValue = value && value?.toLowerCase();
+    if (!contacts && contacts?.length === 0) {
+      fetchContacts();
+    }
     if (contacts) {
       const firstNameRes = contacts?.filter(e =>
         e.firstname.toLowerCase().includes(lowerValue),
@@ -119,7 +122,11 @@ const PhonebookProvider = ({ children }) => {
   async function deleteContact(id) {
     setIsLoading(true);
 
-    await phoneService.deleteContact(id);
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Press 'OK' to delete the contact."))
+      await phoneService.deleteContact(id);
+
+    performSearch('');
 
     setIsLoading(false);
     // return data;

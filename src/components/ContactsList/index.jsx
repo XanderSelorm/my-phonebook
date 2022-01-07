@@ -18,21 +18,20 @@ const ContactsList = () => {
   };
   return (
     <>
-      {contacts?.length > 0 ? (
-        contacts?.map(contact => {
-          return (
-            <ContactItem
-              key={contact.id}
-              contact={contact}
-              onDelete={() => deleteContact(contact.id)}
-              onEdit={() => onEdit(contact)}
-              onViewContact={() => onViewContact(contact)}
-            />
-          );
-        })
-      ) : (
-        <p>No contacts Found</p>
-      )}
+      {searchResults?.length > 0
+        ? searchResults?.map(contact => {
+            return (
+              <ContactItem
+                key={contact.id}
+                contact={contact}
+                onDelete={() => deleteContact(contact.id)}
+                onEdit={() => onEdit(contact)}
+                onViewContact={() => onViewContact(contact)}
+              />
+            );
+          })
+        : searchResults &&
+          searchResults.length === 0 && <p>No contacts Found</p>}
     </>
   );
 };
