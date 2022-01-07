@@ -1,27 +1,22 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import ContactsList from 'components/ContactsList';
-import { usePhonebook } from 'hooks/Context';
 import useDocumentTitle from 'hooks/useDocumentTitle';
+import useStyles from './styles';
 
 function DirectoryHome() {
   useDocumentTitle('Home | My Phonebook');
-  const heroTitle =
-    'The fastest way to find contacts, products & services in Ghana';
-  const heroSubTitle =
-    'Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam no suscipit quaerendum. At nam minimum ponderum. Est audiam animal molestiae te.';
 
-  const { contacts, fetchContacts } = usePhonebook();
-
-  React.useEffect(() => {
-    // if (contacts?.length)
-    fetchContacts();
-  }, []);
+  const classes = useStyles();
 
   return (
-    <>
-      <ContactsList />
-    </>
+    <Grid item container className={classes.main}>
+      <Grid item xs={false} sm={1} />
+      <Grid item container xs={12} sm={10} className={classes.content}>
+        <ContactsList />
+      </Grid>
+      <Grid item xs={false} sm={1} />
+    </Grid>
   );
 }
 export default DirectoryHome;

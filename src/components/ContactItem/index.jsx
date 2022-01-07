@@ -1,11 +1,51 @@
+import { Box, Grid, Typography, IconButton, ButtonBase } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Delete, Edit } from '@mui/icons-material';
+import useStyles from './styles';
 
-const ContactItem = ({ name, phone }) => {
+const ContactItem = ({ name, phones, onDelete }) => {
+  const classes = useStyles();
+
   return (
-    <div className="contact">
-      <h2 className="contactName">{name}</h2>
-      <p>{phone}</p>
-    </div>
+    <Grid
+      container
+      className={classes.contact}
+      justifyContent="space-between"
+      flexWrap="nowrap"
+    >
+      <Grid item container sm={10} md={10} flexGrow={1} alignItems="center">
+        <Grid item sm={6}>
+          <Link to="" className={classes.link}>
+            <Typography variant="h6">{name}</Typography>
+          </Link>
+        </Grid>
+        <Grid item sm={6}>
+          {/* {phones?.map(phone => ( */}
+          <Typography variant="p">{phones[0]}</Typography>
+          {/* ))} */}
+        </Grid>
+      </Grid>
+      <Grid
+        item
+        container
+        sm={2}
+        md={2}
+        justifyContent="flex-end"
+        flexWrap="nowrap"
+      >
+        <Grid item sm={6}>
+          <IconButton onClick={() => {}}>
+            <Edit />
+          </IconButton>
+        </Grid>
+        <Grid item sm={6}>
+          <IconButton onClick={() => onDelete()}>
+            <Delete />
+          </IconButton>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,18 +1,7 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import phoneService from 'services/phone';
-
-const createContact = (task, type) => ({
-  id: task.Id,
-  guid: task.GUID,
-});
 
 // we create a React Context, for this to be accessible
 // from a component later
@@ -27,12 +16,13 @@ const PhonebookProvider = ({ children }) => {
   const [phoneNumbers, setPhoneNumbers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
     setIsAddContactFormValid(
       (firstName?.length || lastName?.length) && phoneNumbers?.length,
     );
-  }, []);
+  }, [firstName?.length, lastName?.length, phoneNumbers?.length]);
 
   const clear = () => {
     setFirstName('');
@@ -42,26 +32,49 @@ const PhonebookProvider = ({ children }) => {
 
   // TODO: Rewrite this search function
   const performSearch = value => {
-    const lowerValue = value?.toLowerCase();
+    const lowerValue = value && value?.toLowerCase();
     if (contacts) {
-      const nameRes = contacts.filter(e =>
-        e.name.toLowerCase().includes(lowerValue),
+      const firstNameRes = contacts?.filter(e =>
+        e.firstname.toLowerCase().includes(lowerValue),
       );
-      const descRes = contacts.filter(e =>
-        e.description.toLowerCase().includes(lowerValue),
+      const lastNameRes = contacts?.filter(e =>
+        e.lastname.toLowerCase().includes(lowerValue),
       );
-      const locRes = contacts.filter(e =>
-        e.location.toLowerCase().includes(lowerValue),
+      const contactPhones = [];
+      contacts?.filter(e =>
+        e.phonenumbers.forEach(x => {
+          if (x.includes(lowerValue)) {
+            contactPhones.push(e);
+          }
+          return false;
+        }),
       );
-      const combinedRes = [...nameRes, ...descRes, ...locRes];
-      const newRes = Array.from(new Set(combinedRes));
+      const phoneRes = [...new Set(contactPhones).values()];
+
+      const combinedRes = [...firstNameRes, ...lastNameRes, ...phoneRes];
+      const newRes = Array.from(new Set(combinedRes).values());
+      newRes.sort((a, b) => sortContacts(a, b));
       setSearchResults(newRes);
     }
+  };
+
+  const sortContacts = (a, b) => {
+    const fa = a.firstname?.toLowerCase();
+    const fb = b.firstname?.toLowerCase();
+
+    if (fa < fb) {
+      return -1;
+    }
+    if (fa > fb) {
+      return 1;
+    }
+    return 0;
   };
 
   async function fetchContacts() {
     setIsLoading(true);
     const _results = await phoneService.getContacts();
+    _results.sort((a, b) => sortContacts(a, b));
     setContacts(_results);
 
     setIsLoading(false);
@@ -80,11 +93,34 @@ const PhonebookProvider = ({ children }) => {
 
     const internalId = uuid();
 
-    await phoneService.addContact({
+    const newContact = {
       id: internalId,
-    });
+      firstname: firstName,
+      lastname: lastName,
+      phonenumber: phoneNumbers,
+    };
+
+    await phoneService.addContact(newContact);
 
     clear();
+    setIsLoading(false);
+    // return data;
+  }
+
+  async function updateContact(updatedItem) {
+    setIsLoading(true);
+
+    await phoneService.updateContact(updatedItem);
+
+    setIsLoading(false);
+    // return data;
+  }
+
+  async function deleteContact(id) {
+    setIsLoading(true);
+
+    await phoneService.deleteContact(id);
+
     setIsLoading(false);
     // return data;
   }
@@ -98,14 +134,20 @@ const PhonebookProvider = ({ children }) => {
         searchResults,
         firstName,
         lastName,
+        openDrawer,
+        isAddContactFormValid,
+        setOpenDrawer,
         addContact,
         setSearchResults,
         clear,
         fetchContacts,
         fetchContact,
+        updateContact,
+        deleteContact,
         setContact,
         setFirstName,
         setLastName,
+        setPhoneNumbers,
         performSearch,
       }}
     >

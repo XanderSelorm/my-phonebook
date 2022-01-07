@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { lightTheme } from 'themes';
 import Compose from 'hooks/ComposeProvider';
+import NavBar from 'components/NavBar';
 import { PhonebookProvider } from 'hooks/Context';
 import ReactGA from 'react-ga';
 import DirectoryHome from './pages/Home';
@@ -19,6 +20,7 @@ function App() {
       <ThemeProvider theme={lightTheme}>
         <BrowserRouter>
           <Compose components={[PhonebookProvider]}>
+            <NavBar />
             <Box>
               <Routes>
                 <Route path="/contact/:id" element={<ContactDetails />} />

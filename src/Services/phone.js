@@ -4,11 +4,15 @@ const getContacts = () => {
   return contacts;
 };
 
+const getContact = id => {
+  return contacts.filter(x => x.id === id);
+};
+
 const addContact = newContact => {
   return contacts.push(newContact);
 };
 
-const delContact = id => {
+const deleteContact = id => {
   const itemPosition = contacts.indexOf(x => x.id === id);
   return contacts.splice(itemPosition, 1);
 };
@@ -19,4 +23,10 @@ const updateContact = newContact => {
   return contacts.splice(itemPosition, 1, newContact);
 };
 
-export default { getContacts, addContact, delContact, updateContact };
+export default {
+  getContacts,
+  getContact,
+  addContact,
+  deleteContact,
+  updateContact,
+};

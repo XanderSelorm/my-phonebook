@@ -1,63 +1,96 @@
+import { Box, Typography } from '@mui/material';
+import CustomButton from 'components/CustomButton';
+import CustomFormTextBox from 'components/CustomFormTextBox';
 import React, { useState, useEffect } from 'react';
+import { createFilterOptions } from '@mui/material/Autocomplete';
+import { usePhonebook } from 'hooks/Context';
+import CustomFormControl from 'components/CustomFormControl';
+import DataItemPicker from 'components/DataItemPicker';
+import { useStyles } from './styles';
 
-const AddContactForm = ({ onSubmit }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [disabled, setDisabled] = useState(true);
+const AddContactForm = () => {
+  const filter = createFilterOptions();
 
-  useEffect(() => {
-    if ((firstName || lastName) && phone) {
-      setDisabled(false);
-    }
-  }, [firstName, lastName, phone]);
+  const {
+    firstName,
+    setFirstName,
+    phoneNumbers,
+    setPhoneNumbers,
+    lastName,
+    setLastName,
+    addContact,
+    isLoading,
+    isAddContactFormValid,
+  } = usePhonebook();
+
+  const classes = useStyles();
 
   const handleSubmit = () => {
-    // e.preventDefault();
-    // Submit Data here
     console.log('submitting');
-    const newContact = {
-      first_name: firstName,
-      last_name: lastName,
-      phone_number: phone,
-    };
-    console.log('new contact: ', newContact);
 
-    onSubmit(newContact);
+    addContact();
 
     console.log('new submitted: ');
+  };
 
-    setFirstName('');
-    setLastName('');
-    setPhone('');
+  const filterOptions = (options, params) => {
+    const filtered = filter(options, params);
+
+    const { inputValue } = params;
+    // Suggest the creation of a new value
+    const isExisting = options.some(option => inputValue === option.value);
+    if (inputValue !== '' && !isExisting) {
+      filtered.push(inputValue);
+    }
+
+    return filtered;
   };
 
   return (
-    <div className="addContactForm justify-content-md-between ">
-      <input
-        className="col-md-3"
-        type="text"
-        placeholder="First Name"
-        onChange={e => setFirstName(e.target.value.trim())}
+    <Box className={classes.addForm}>
+      <Typography variant="h5" className={classes.heading}>
+        Add New Contact
+      </Typography>
+      <CustomFormTextBox
+        label="First Name"
+        placeholder=""
+        value={firstName}
+        handleOnChange={e => setFirstName(e.target.value.trim())}
       />
-      <input
-        className="col-md-3"
-        type="text"
-        placeholder="Last Name"
-        onChange={e => setLastName(e.target.value.trim())}
+
+      <CustomFormTextBox
+        label="Last Name"
+        placeholder=""
+        value={lastName}
+        handleOnChange={e => setLastName(e.target.value.trim())}
       />
-      <input
-        className="col-md-3"
-        type="text"
-        placeholder="Number"
-        onChange={e => setPhone(e.target.value.trim())}
-      />
+
+      <CustomFormControl label="Phone Number(s)">
+        <DataItemPicker
+          multiple
+          freeSolo
+          selectOnFocus
+          clearOnBlur
+          loading={false}
+          loadingText=""
+          filterOptions={(options, params) => filterOptions(options, params)}
+          // value={phoneNumbers}
+          onChange={x => {
+            console.log(x);
+            setPhoneNumbers(x);
+          }}
+        />
+      </CustomFormControl>
+
       <div className="col-md-2">
-        <button type="submit" disabled={disabled} onClick={handleSubmit}>
-          Add Contact
-        </button>
+        <CustomButton
+          label="Save Contact"
+          disabled={!isAddContactFormValid}
+          handleClick={handleSubmit}
+          isLoading={isLoading}
+        />
       </div>
-    </div>
+    </Box>
   );
 };
 

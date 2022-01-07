@@ -15,8 +15,8 @@
 //   }, [contacts]);
 
 //   const sortContacts = (a, b) => {
-//     const fa = a.first_name?.toLowerCase();
-//     const fb = b.first_name?.toLowerCase();
+//     const fa = a.firstname?.toLowerCase();
+//     const fb = b.firstname?.toLowerCase();
 
 //     if (fa < fb) {
 //       return -1;
