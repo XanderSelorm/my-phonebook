@@ -13,7 +13,7 @@ const addContact = newContact => {
 };
 
 const deleteContact = id => {
-  const itemPosition = contacts.indexOf(x => x.id === id);
+  const itemPosition = contacts.indexOf(contacts.find(x => x.id === id));
   return contacts.splice(itemPosition, 1);
 };
 

@@ -7,6 +7,8 @@ const ContactsList = () => {
   useEffect(() => {
     fetchContacts();
   }, []);
+
+  const onEdit = () => {};
   return (
     <>
       {contacts?.map(contact => {
@@ -16,6 +18,8 @@ const ContactsList = () => {
             key={contact.id}
             name={`${firstname} ${lastname}`}
             phones={phonenumbers}
+            onDelete={() => deleteContact(contact.id)}
+            onEdit={() => onEdit()}
           />
         );
       })}

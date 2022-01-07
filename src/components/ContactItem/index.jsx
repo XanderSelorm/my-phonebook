@@ -1,10 +1,10 @@
-import { Box, Grid, Typography, IconButton, ButtonBase } from '@mui/material';
+import { Box, Grid, Typography, IconButton } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Delete, Edit } from '@mui/icons-material';
 import useStyles from './styles';
 
-const ContactItem = ({ name, phones, onDelete }) => {
+const ContactItem = ({ name, phones, onDelete, onEdit }) => {
   const classes = useStyles();
 
   return (
@@ -35,12 +35,12 @@ const ContactItem = ({ name, phones, onDelete }) => {
         flexWrap="nowrap"
       >
         <Grid item sm={6}>
-          <IconButton onClick={() => {}}>
+          <IconButton onClick={() => onEdit()}>
             <Edit />
           </IconButton>
         </Grid>
         <Grid item sm={6}>
-          <IconButton onClick={() => onDelete()}>
+          <IconButton onClick={onDelete}>
             <Delete />
           </IconButton>
         </Grid>
