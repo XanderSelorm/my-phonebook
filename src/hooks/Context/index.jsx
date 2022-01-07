@@ -97,7 +97,7 @@ const PhonebookProvider = ({ children }) => {
       id: internalId,
       firstname: firstName,
       lastname: lastName,
-      phonenumber: phoneNumbers,
+      phonenumbers: phoneNumbers,
     };
 
     await phoneService.addContact(newContact);

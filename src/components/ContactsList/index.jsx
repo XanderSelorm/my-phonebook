@@ -3,26 +3,35 @@ import { usePhonebook } from 'hooks/Context';
 import ContactItem from '../ContactItem';
 
 const ContactsList = () => {
-  const { fetchContacts, contacts, deleteContact } = usePhonebook();
+  const { fetchContacts, contacts, deleteContact, searchResults } =
+    usePhonebook();
   useEffect(() => {
     fetchContacts();
   }, []);
 
-  const onEdit = () => {};
+  const onEdit = contact => {
+    console.log('edit: ', contact.id);
+  };
+
+  const onViewContact = contact => {
+    console.log('view: ', contact.id);
+  };
   return (
     <>
-      {contacts?.map(contact => {
-        const { firstname, lastname, phonenumbers } = contact;
-        return (
-          <ContactItem
-            key={contact.id}
-            name={`${firstname} ${lastname}`}
-            phones={phonenumbers}
-            onDelete={() => deleteContact(contact.id)}
-            onEdit={() => onEdit()}
-          />
-        );
-      })}
+      {searchResults?.length > 0
+        ? searchResults?.map(contact => {
+            return (
+              <ContactItem
+                key={contact.id}
+                contact={contact}
+                onDelete={() => deleteContact(contact.id)}
+                onEdit={item => onEdit(item)}
+                onViewContact={item => onViewContact(item)}
+              />
+            );
+          })
+        : searchResults &&
+          searchResults.length === 0 && <p>No contacts Found</p>}
     </>
   );
 };

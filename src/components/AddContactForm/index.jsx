@@ -76,7 +76,6 @@ const AddContactForm = () => {
           filterOptions={(options, params) => filterOptions(options, params)}
           // value={phoneNumbers}
           onChange={x => {
-            console.log(x);
             setPhoneNumbers(x);
           }}
         />

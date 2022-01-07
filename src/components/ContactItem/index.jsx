@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 import { Delete, Edit } from '@mui/icons-material';
 import useStyles from './styles';
 
-const ContactItem = ({ name, phones, onDelete, onEdit }) => {
+const ContactItem = ({ contact, onDelete, onEdit, onViewContact }) => {
   const classes = useStyles();
+
+  const { firstname, lastname, phonenumbers, id } = contact;
 
   return (
     <Grid
@@ -16,13 +18,15 @@ const ContactItem = ({ name, phones, onDelete, onEdit }) => {
     >
       <Grid item container sm={10} md={10} flexGrow={1} alignItems="center">
         <Grid item sm={6}>
-          <Link to="" className={classes.link}>
-            <Typography variant="h6">{name}</Typography>
-          </Link>
+          {/* <Link to={`/contact/${id}`} className={classes.link}> */}
+          <a className={classes.link} onClick={() => onViewContact(contact)}>
+            <Typography variant="h6">{`${firstname} ${lastname}`}</Typography>
+          </a>
+          {/* </Link> */}
         </Grid>
         <Grid item sm={6}>
           {/* {phones?.map(phone => ( */}
-          <Typography variant="p">{phones[0]}</Typography>
+          <Typography variant="p">{phonenumbers[0]}</Typography>
           {/* ))} */}
         </Grid>
       </Grid>
@@ -35,7 +39,7 @@ const ContactItem = ({ name, phones, onDelete, onEdit }) => {
         flexWrap="nowrap"
       >
         <Grid item sm={6}>
-          <IconButton onClick={() => onEdit()}>
+          <IconButton onClick={() => onEdit(contact)}>
             <Edit />
           </IconButton>
         </Grid>

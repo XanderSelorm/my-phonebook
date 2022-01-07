@@ -9,7 +9,12 @@ const useStyles = makeStyles(theme => ({
     },
   },
   link: {
+    cursor: 'pointer',
     textDecoration: 'none',
+    color: theme.palette.primary.main,
+    '&:focus, &:hover, &:visited, &:link, &:active': {
+      textDecoration: 'none',
+    },
   },
 }));
 export default useStyles;
