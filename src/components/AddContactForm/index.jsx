@@ -12,23 +12,51 @@ const AddContactForm = () => {
   const filter = createFilterOptions();
 
   const {
-    firstName,
-    setFirstName,
-    phoneNumbers,
-    setPhoneNumbers,
-    lastName,
-    setLastName,
+    // firstName,
+    // setFirstName,
+    // phoneNumbers,
+    // setPhoneNumbers,
+    // lastName,
+    // setLastName,
+    contact,
+    setContact,
     addContact,
+    isEditing,
+    isViewing,
     isLoading,
-    isAddContactFormValid,
+    // isAddContactFormValid,
   } = usePhonebook();
 
   const classes = useStyles();
 
+  const [firstName, setFirstName] = useState(contact?.firstname || '');
+  const [lastName, setLastName] = useState(contact?.lastname || '');
+  const [phoneNumbers, setPhoneNumbers] = useState(contact?.phonenumbers || []);
+  const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
+
+  useEffect(() => {
+    setIsAddContactFormValid(
+      (firstName?.length || lastName?.length) && phoneNumbers?.length,
+    );
+  }, [firstName?.length, lastName?.length, phoneNumbers?.length]);
+
+  const clear = () => {
+    setFirstName('');
+    setLastName('');
+    setPhoneNumbers([]);
+    setContact({});
+  };
+
   const handleSubmit = () => {
     console.log('submitting');
 
-    addContact();
+    addContact({
+      firstname: firstName,
+      lastname: lastName,
+      phonenumbers: phoneNumbers,
+    });
+
+    clear();
 
     console.log('new submitted: ');
   };
@@ -74,7 +102,7 @@ const AddContactForm = () => {
           loading={false}
           loadingText=""
           filterOptions={(options, params) => filterOptions(options, params)}
-          // value={phoneNumbers}
+          value={phoneNumbers}
           onChange={x => {
             setPhoneNumbers(x);
           }}

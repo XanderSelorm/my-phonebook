@@ -7,7 +7,7 @@ import { useStyles } from './styles';
 
 const DataItemPicker = ({
   label,
-  // value,
+  value,
   loading,
   onChange,
   handleGetData,
@@ -20,7 +20,7 @@ const DataItemPicker = ({
 
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState(initialOptions ?? []);
-  const [value, setValue] = useState();
+  // const [value, setValue] = useState();
 
   return (
     <Autocomplete

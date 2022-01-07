@@ -11,29 +11,31 @@ const PhonebookProvider = ({ children }) => {
   const [contact, setContact] = useState({});
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumbers, setPhoneNumbers] = useState([]);
+  // const [firstName, setFirstName] = useState('');
+  // const [lastName, setLastName] = useState('');
+  // const [phoneNumbers, setPhoneNumbers] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
-  const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
+  // const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  useEffect(() => {
-    setIsAddContactFormValid(
-      (firstName?.length || lastName?.length) && phoneNumbers?.length,
-    );
-  }, [firstName?.length, lastName?.length, phoneNumbers?.length]);
+  // useEffect(() => {
+  //   setIsAddContactFormValid(
+  //     (firstName?.length || lastName?.length) && phoneNumbers?.length,
+  //   );
+  // }, [firstName?.length, lastName?.length, phoneNumbers?.length]);
 
   const clear = () => {
-    setFirstName('');
-    setLastName('');
-    setPhoneNumbers([]);
+    console.log('clear form called');
+    // setFirstName('');
+    // setLastName('');
+    // setPhoneNumbers([]);
+    setContact({});
   };
 
   // TODO: Rewrite this search function
   const performSearch = value => {
     console.log('Search running');
-    const lowerValue = value && value?.toLowerCase();
+    const lowerValue = (value && value?.toLowerCase()) || '';
     if (!contacts && contacts?.length === 0) {
       fetchContacts();
     }
@@ -92,21 +94,22 @@ const PhonebookProvider = ({ children }) => {
     setIsLoading(false);
   }
 
-  async function addContact() {
+  async function addContact(item) {
     setIsLoading(true);
 
     const internalId = uuid();
 
     const newContact = {
       id: internalId,
-      firstname: firstName,
-      lastname: lastName,
-      phonenumbers: phoneNumbers,
+      firstname: item.firstname,
+      lastname: item.lastname,
+      phonenumbers: item.phonenumbers,
     };
 
     await phoneService.addContact(newContact);
 
     clear();
+    performSearch();
     setIsLoading(false);
     // return data;
   }
@@ -140,10 +143,10 @@ const PhonebookProvider = ({ children }) => {
         contacts,
         contact,
         searchResults,
-        firstName,
-        lastName,
+        // firstName,
+        // lastName,
         openDrawer,
-        isAddContactFormValid,
+        // isAddContactFormValid,
         setOpenDrawer,
         addContact,
         setSearchResults,
@@ -153,9 +156,9 @@ const PhonebookProvider = ({ children }) => {
         updateContact,
         deleteContact,
         setContact,
-        setFirstName,
-        setLastName,
-        setPhoneNumbers,
+        // setFirstName,
+        // setLastName,
+        // setPhoneNumbers,
         performSearch,
       }}
     >
