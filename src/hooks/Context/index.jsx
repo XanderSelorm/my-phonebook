@@ -17,6 +17,16 @@ const PhonebookProvider = ({ children }) => {
   const [searchResults, setSearchResults] = useState([]);
   // const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
+
+  useEffect(() => {
+    if (openDrawer === false) {
+      setIsViewing(false);
+      setIsEditing(false);
+      clear();
+    }
+  }, [openDrawer]);
 
   // useEffect(() => {
   //   setIsAddContactFormValid(
@@ -111,7 +121,6 @@ const PhonebookProvider = ({ children }) => {
     clear();
     performSearch();
     setIsLoading(false);
-    // return data;
   }
 
   async function updateContact(updatedItem) {
@@ -119,8 +128,9 @@ const PhonebookProvider = ({ children }) => {
 
     await phoneService.updateContact(updatedItem);
 
+    clear();
+    performSearch();
     setIsLoading(false);
-    // return data;
   }
 
   async function deleteContact(id) {
@@ -133,7 +143,6 @@ const PhonebookProvider = ({ children }) => {
     performSearch('');
 
     setIsLoading(false);
-    // return data;
   }
 
   return (
@@ -147,6 +156,10 @@ const PhonebookProvider = ({ children }) => {
         // lastName,
         openDrawer,
         // isAddContactFormValid,
+        isEditing,
+        setIsEditing,
+        isViewing,
+        setIsViewing,
         setOpenDrawer,
         addContact,
         setSearchResults,

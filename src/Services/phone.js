@@ -20,7 +20,9 @@ const deleteContact = id => {
 const updateContact = newContact => {
   const item = contacts.filter(x => x.id === newContact.id);
   const itemPosition = contacts.indexOf(item.id);
-  return contacts.splice(itemPosition, 1, newContact);
+  const final = contacts.splice(itemPosition, 1, newContact);
+  console.log(final.find(x => x.id === newContact.id));
+  return final;
 };
 
 export default {

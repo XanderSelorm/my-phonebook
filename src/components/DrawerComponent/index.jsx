@@ -39,7 +39,8 @@ function DrawerComponent() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { openDrawer, setOpenDrawer } = usePhonebook();
+  const { openDrawer, setOpenDrawer, setIsViewing, setIsEditing } =
+    usePhonebook();
 
   return (
     <>
@@ -53,6 +54,8 @@ function DrawerComponent() {
             className={classes.closeButton}
             onClick={() => {
               setOpenDrawer(!openDrawer);
+              setIsViewing(false);
+              setIsEditing(false);
             }}
           >
             <Close />
@@ -63,7 +66,10 @@ function DrawerComponent() {
       <CustomButton
         color="primary"
         label={isMobile ? <Add /> : 'Add Contact'}
-        onClick={() => setOpenDrawer(!openDrawer)}
+        onClick={() => {
+          setOpenDrawer(!openDrawer);
+          setIsEditing(true);
+        }}
         startIcon={!isMobile && <Add className={classes.icon} />}
       />
     </>

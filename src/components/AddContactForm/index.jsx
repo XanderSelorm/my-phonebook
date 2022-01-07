@@ -21,7 +21,9 @@ const AddContactForm = () => {
     contact,
     setContact,
     addContact,
+    updateContact,
     isEditing,
+    setIsEditing,
     isViewing,
     isLoading,
     // isAddContactFormValid,
@@ -32,13 +34,16 @@ const AddContactForm = () => {
   const [firstName, setFirstName] = useState(contact?.firstname || '');
   const [lastName, setLastName] = useState(contact?.lastname || '');
   const [phoneNumbers, setPhoneNumbers] = useState(contact?.phonenumbers || []);
-  const [isAddContactFormValid, setIsAddContactFormValid] = useState(false);
+  const [isAddContactFormValid, setIsAddContactFormValid] = useState(isEditing);
+  const [isDisabled, setIsDisabled] = useState(!isEditing);
 
   useEffect(() => {
     setIsAddContactFormValid(
-      (firstName?.length || lastName?.length) && phoneNumbers?.length,
+      (firstName?.length || lastName?.length) &&
+        phoneNumbers?.length &&
+        isEditing,
     );
-  }, [firstName?.length, lastName?.length, phoneNumbers?.length]);
+  }, [firstName?.length, isEditing, lastName?.length, phoneNumbers?.length]);
 
   const clear = () => {
     setFirstName('');
@@ -50,12 +55,17 @@ const AddContactForm = () => {
   const handleSubmit = () => {
     console.log('submitting');
 
-    addContact({
+    const newContact = {
       firstname: firstName,
       lastname: lastName,
       phonenumbers: phoneNumbers,
-    });
+    };
 
+    if (!isEditing) {
+      addContact(newContact);
+    } else {
+      updateContact(newContact);
+    }
     clear();
 
     console.log('new submitted: ');
@@ -82,6 +92,7 @@ const AddContactForm = () => {
       <CustomFormTextBox
         label="First Name"
         placeholder=""
+        readOnly={isDisabled}
         value={firstName}
         handleOnChange={e => setFirstName(e.target.value.trim())}
       />
@@ -90,11 +101,13 @@ const AddContactForm = () => {
         label="Last Name"
         placeholder=""
         value={lastName}
+        readOnly={isDisabled}
         handleOnChange={e => setLastName(e.target.value.trim())}
       />
 
       <CustomFormControl label="Phone Number(s)">
         <DataItemPicker
+          disabled={isDisabled}
           multiple
           freeSolo
           selectOnFocus
@@ -109,14 +122,21 @@ const AddContactForm = () => {
         />
       </CustomFormControl>
 
-      <div className="col-md-2">
+      {!isEditing ? (
         <CustomButton
           label="Save Contact"
           disabled={!isAddContactFormValid}
           handleClick={handleSubmit}
           isLoading={isLoading}
         />
-      </div>
+      ) : (
+        <CustomButton
+          label="Update Contact"
+          disabled={!isAddContactFormValid}
+          handleClick={handleSubmit}
+          isLoading={isLoading}
+        />
+      )}
     </Box>
   );
 };
